@@ -16,7 +16,7 @@ mod tests {
   }
 
   #[bench]
-  fn bench_8_digit(b: &mut Bencher) {
+  fn bench_8_digits(b: &mut Bencher) {
     let mut bcd = [0; 34];
     b.iter(|| {
       bin2bcd(89999999, &mut bcd);
