@@ -8,6 +8,30 @@ mod tests {
   use test::Bencher;
 
   #[bench]
+  fn bench_bcd8_1_digit(b: &mut Bencher) {
+    let mut bcd = [0; BCD_DIGITS_128];
+    b.iter(|| {
+      bin2bcd128(1, &mut bcd);
+    });
+  }
+
+  #[bench]
+  fn bench_bcd8_2_digits(b: &mut Bencher) {
+    let mut bcd = [0; BCD_DIGITS_128];
+    b.iter(|| {
+      bin2bcd128(89, &mut bcd);
+    });
+  }
+
+  #[bench]
+  fn bench_bcd8_3_digits(b: &mut Bencher) {
+    let mut bcd = [0; BCD_DIGITS_128];
+    b.iter(|| {
+      bin2bcd128(255, &mut bcd);
+    });
+  }
+
+  #[bench]
   fn bench_bcd128_1_digit(b: &mut Bencher) {
     let mut bcd = [0; BCD_DIGITS_128];
     b.iter(|| {
