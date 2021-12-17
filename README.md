@@ -5,12 +5,12 @@ Binary-BCD-Binary conversion.
 
 ## Benchmarks
 
-bin2bcd
+bin2bcd128
 
-| Digits | Time   | Unit             |
-|--------|--------|------------------|
-| 1      | 240    | ns/iter (+/- 1)  |
-| 8      | 3,192  | ns/iter (+/- 31) |
-| 16     | 6,133  | ns/iter (+/- 39) |
-| 32     | 12,254 | ns/iter (+/- 132)|
-| 34     | 12,934 | ns/iter (+/- 121)|
+| Digits | Time    | Unit             |
+|--------|---------|------------------|
+| 1      | 135     | ns/iter (+/- 1)  |
+| 8      | 343     | ns/iter (+/- 0)  |
+| 16     | 545     | ns/iter (+/- 5)  |
+| 32     | 988     | ns/iter (+/- 11) |
+| 34     | 1,032   | ns/iter (+/- 6)  |
