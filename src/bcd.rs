@@ -40,7 +40,7 @@ mod tests {
   }
 
   #[test]
-  fn test_16_digit() {
+  fn test_16_digits() {
     let mut bcd = [0; 34];
     bin2bcd(8999999999999999, &mut bcd);
     assert_eq!("[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 8, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9]", format!("{:?}", bcd));
