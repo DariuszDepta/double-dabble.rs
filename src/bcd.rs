@@ -55,14 +55,14 @@ pub fn bin2bcd128(bin: u128, bcd: &mut [u8; BCD_DIGITS_128]) {
       if bcd[k] > 4 {
         bcd[k] += 3;
       }
-      carry[k] = bcd[k] >> 3;
+      carry[k] = (bcd[k] >> 3) & 0xF;
       bcd[k] = ((bcd[k] << 1) & 0xF) | bit_mask;
       while k > 0 {
         k -= 1;
         if bcd[k] > 4 {
           bcd[k] += 3;
         }
-        carry[k] = bcd[k] >> 3;
+        carry[k] = (bcd[k] >> 3) & 0xF;
         bcd[k] = ((bcd[k] << 1) | carry[k + 1]) & 0xF;
       }
     }
