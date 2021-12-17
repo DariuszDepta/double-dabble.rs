@@ -1,2 +1,3 @@
 # double-dabble.rs
-Binary-BCD-Binary conversions
+
+Binary-BCD-Binary conversion.

@@ -1,0 +1,10 @@
+[package]
+name = "double-dabble"
+version = "0.0.1"
+authors = ["Dariusz Depta <dariusz.depta@engos.software>"]
+description = "Binary-BCD-Binary conversion"
+repository = "https://github.com/EngosSoftware/double-dabble.rs.git"
+license = "MIT"
+edition = "2021"
+
+[dependencies]
