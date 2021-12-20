@@ -1,3 +1,5 @@
+use crate::{BCD_DIGITS_128, BIN_BITS_128};
+
 ///
 #[macro_export]
 macro_rules! bin2bcd {
@@ -44,11 +46,6 @@ const BIN_BITS_8: usize = 8;
 pub fn bin2bcd8(bin: u8, bcd: &mut [u8; BCD_DIGITS_8]) {
   bin2bcd!(BIN_BITS_8, BCD_DIGITS_8, u8, bin, bcd);
 }
-
-///
-pub const BCD_DIGITS_128: usize = 34;
-///
-const BIN_BITS_128: usize = 128;
 
 ///
 pub fn bin2bcd128(bin: u128, bcd: &mut [u8; BCD_DIGITS_128]) {
