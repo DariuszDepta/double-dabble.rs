@@ -1,44 +1,72 @@
-use crate::{BCD_DIGITS_128, BIN_BITS_128};
+use crate::{BCD_DIGITS_3, BCD_DIGITS_34, BIN_BITS_128, BIN_BITS_8};
 
 ///
-pub fn bcd2bin128(bcd: &mut [u8; BCD_DIGITS_128]) -> u128 {
-  let mut num: u128 = 0;
-  let mut u = 0;
-  let msb: u128 = 1 << BIN_BITS_128 - 1;
-  for i in 0..BCD_DIGITS_128 {
-    if bcd[i] != 0 {
-      break;
-    }
-    u += 1;
-  }
-  for _ in 0..BIN_BITS_128 {
-    num >>= 1;
-    let mut k = BCD_DIGITS_128 - 1;
-    if (bcd[k] & 0x1) == 1 {
-      num |= msb;
-    }
-    while k > u {
-      if (bcd[k - 1] & 0x1) > 0 {
-        bcd[k] = (bcd[k] >> 1) | 0x8;
-      } else {
-        bcd[k] >>= 1;
+#[macro_export]
+macro_rules! bcd2bin {
+  ($bits:expr, $digits:expr, $size:ty, $bcd:tt) => {{
+    let mut num: $size = 0;
+    let mut u = 0;
+    let msb: $size = 1 << $bits - 1;
+    for i in 0..$digits {
+      if $bcd[i] != 0 {
+        break;
       }
-      if bcd[k] > 7 {
-        bcd[k] -= 3;
+      u += 1;
+    }
+    for _ in 0..$bits {
+      num >>= 1;
+      let mut k = $digits - 1;
+      if ($bcd[k] & 0x1) == 1 {
+        num |= msb;
       }
-      k -= 1;
+      while k > u {
+        if ($bcd[k - 1] & 0x1) > 0 {
+          $bcd[k] = ($bcd[k] >> 1) | 0x8;
+        } else {
+          $bcd[k] >>= 1;
+        }
+        if $bcd[k] > 7 {
+          $bcd[k] -= 3;
+        }
+        k -= 1;
+      }
+      $bcd[k] >>= 1;
+      if $bcd[k] > 7 {
+        $bcd[k] -= 3;
+      }
     }
-    bcd[k] >>= 1;
-    if bcd[k] > 7 {
-      bcd[k] -= 3;
-    }
-  }
-  num
+    num
+  }};
+}
+
+///
+pub fn bcd2bin8(bcd: &mut [u8; BCD_DIGITS_3]) -> u8 {
+  bcd2bin!(BIN_BITS_8, BCD_DIGITS_3, u8, bcd)
+}
+
+///
+pub fn bcd2bin128(bcd: &mut [u8; BCD_DIGITS_34]) -> u128 {
+  bcd2bin!(BIN_BITS_128, BCD_DIGITS_34, u128, bcd)
 }
 
 #[cfg(test)]
 mod tests {
   use super::*;
+
+  #[test]
+  fn test_bin_1_digit() {
+    assert_eq!(1, bcd2bin8(&mut [0, 0, 1]));
+  }
+
+  #[test]
+  fn test_bin_2_digits() {
+    assert_eq!(89, bcd2bin8(&mut [0, 8, 9]));
+  }
+
+  #[test]
+  fn test_bin_3_digits() {
+    assert_eq!(255, bcd2bin8(&mut [2, 5, 5]));
+  }
 
   #[test]
   fn test_bin128_1_digit() {
