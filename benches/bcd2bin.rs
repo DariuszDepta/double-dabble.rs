@@ -9,12 +9,12 @@ mod tests {
 
   #[bench]
   fn bench_bcd128_1_digit(b: &mut Bencher) {
-    let bcd: [u8; BCD_DIGITS_128] = [
+    let mut bcd: [u8; BCD_DIGITS_128] = [
       0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
       0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
     ];
     b.iter(|| {
-      bcd2bin128(&bcd);
+      bcd2bin128(&mut bcd);
     });
   }
 
