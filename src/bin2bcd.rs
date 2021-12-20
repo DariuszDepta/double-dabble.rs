@@ -9,7 +9,6 @@ macro_rules! bin2bcd {
     let mut carry = [0; $digits];
     let mut num = $bin;
     let mut flag = false;
-    let mut count = 0;
     for _ in 0..$bits {
       bit_mask = if (num & mask) > 0 {
         flag = true;
@@ -22,11 +21,9 @@ macro_rules! bin2bcd {
         if $bcd[k] > 4 {
           $bcd[k] += 3;
         }
-        count += 1;
         carry[k] = ($bcd[k] >> 3) & 0xF;
         $bcd[k] = (($bcd[k] << 1) & 0xF) | bit_mask;
         while k > 0 {
-          count += 1;
           k -= 1;
           if $bcd[k] > 4 {
             $bcd[k] += 3;
@@ -37,7 +34,6 @@ macro_rules! bin2bcd {
       }
       num <<= 1;
     }
-    println!("count1 = {}", count);
   };
 }
 
