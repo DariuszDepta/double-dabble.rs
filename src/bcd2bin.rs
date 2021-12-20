@@ -1,14 +1,12 @@
 use crate::{BCD_DIGITS_128, BIN_BITS_128};
 
-const MSB: u128 = 1 << 127;
-
 ///
-pub fn bcd2bin128(b: &[u8; BCD_DIGITS_128]) -> u128 {
+pub fn bcd2bin128(bcd: &mut [u8; BCD_DIGITS_128]) -> u128 {
   let mut num: u128 = 0;
   let mut u = 0;
-  let mut digits = b.clone();
+  let msb: u128 = 1 << BIN_BITS_128 - 1;
   for i in 0..BCD_DIGITS_128 {
-    if digits[i] != 0 {
+    if bcd[i] != 0 {
       break;
     }
     u += 1;
@@ -16,23 +14,23 @@ pub fn bcd2bin128(b: &[u8; BCD_DIGITS_128]) -> u128 {
   for _ in 0..BIN_BITS_128 {
     num >>= 1;
     let mut k = BCD_DIGITS_128 - 1;
-    if (digits[k] & 0x1) == 1 {
-      num |= MSB;
+    if (bcd[k] & 0x1) == 1 {
+      num |= msb;
     }
     while k > u {
-      if (digits[k - 1] & 0x1) > 0 {
-        digits[k] = (digits[k] >> 1) | 0x8;
+      if (bcd[k - 1] & 0x1) > 0 {
+        bcd[k] = (bcd[k] >> 1) | 0x8;
       } else {
-        digits[k] >>= 1;
+        bcd[k] >>= 1;
       }
-      if digits[k] > 7 {
-        digits[k] -= 3;
+      if bcd[k] > 7 {
+        bcd[k] -= 3;
       }
       k -= 1;
     }
-    digits[k] >>= 1;
-    if digits[k] > 7 {
-      digits[k] -= 3;
+    bcd[k] >>= 1;
+    if bcd[k] > 7 {
+      bcd[k] -= 3;
     }
   }
   num
@@ -54,7 +52,7 @@ mod tests {
   }
 
   #[test]
-  fn test_bin128_8_digits() {
+  fn test_bin128_8_bcd() {
     assert_eq!(
       89999999,
       bcd2bin128(&mut [
@@ -65,7 +63,7 @@ mod tests {
   }
 
   #[test]
-  fn test_bin128_16_digits() {
+  fn test_bin128_16_bcd() {
     assert_eq!(
       8999999999999999,
       bcd2bin128(&mut [
@@ -76,7 +74,7 @@ mod tests {
   }
 
   #[test]
-  fn test_bin128_32_digits() {
+  fn test_bin128_32_bcd() {
     assert_eq!(
       89999999999999999999999999999999,
       bcd2bin128(&mut [
@@ -87,7 +85,7 @@ mod tests {
   }
 
   #[test]
-  fn test_bin128_34_digits() {
+  fn test_bin128_34_bcd() {
     assert_eq!(
       8999999999999999999999999999999999,
       bcd2bin128(&mut [
